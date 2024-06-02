@@ -1,5 +1,5 @@
 class Colors:
-    white = (0, 0, 0)
+    white = (255, 255, 255)
     yellow = (255, 255, 0)
     orange = (255, 165, 0)
     red = (255, 0, 0)
@@ -9,7 +9,7 @@ class Colors:
     dark_blue = (0, 0, 139)
     light_green = (144, 238, 144)
     dark_green = (1, 50, 32)
-    black = (255, 255, 255)
+    black = (0, 0, 0)
     background_color = (159, 193, 252)
     grid_color = (3, 56, 148)
     score_button_color = (78, 101, 166)
