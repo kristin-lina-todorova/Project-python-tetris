@@ -13,7 +13,7 @@ class Grid:
             for j in range(self.y):
                 row.append(0)
             self.grid.append(row)
-        self.color = Colors.get_color()
+        self.color = Colors().get_color()
 
     def draw_grid(self, screen):
         for row in range(self.rows):

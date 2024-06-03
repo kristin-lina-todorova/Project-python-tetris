@@ -1,6 +1,7 @@
 import pygame
 from grid import Grid
 from game import Game
+from colors import Colors
 
 pygame.init()
 
@@ -11,7 +12,7 @@ pygame.display.set_caption("Tetratios")
 title_font = pygame.font.Font(None, 40)
 intro_font = pygame.font.Font(None, 30)
 
-clock = pygame.time.Clock*()
+clock = pygame.time.Clock()
 game = Game()
 
 while not game.game_over:
@@ -21,7 +22,8 @@ while not game.game_over:
         game.handle_mouse_movement(event)
     game.update()
 
-    screen.fill((black))
+    colors = Colors()
+    screen.fill(colors.black)
     game.draw(screen)
 
     pygame.display.update()
