@@ -1,68 +1,112 @@
-import pygame
-from grid import Grid
-from tetraminoes import *
-import random
+# game.py
 
+import sys
+import pygame
+from tetraminoes import *
+from grid import Grid
 
 class Game:
+    """Game class to run the game"""
 
     def __init__(self):
+        """Initialization of the Game class"""
         self.grid = Grid()
-        self.current_block = self.generate_block()
-        self.next_blocks = [self.generate_block() for _ in range(3)]
-        self.score = 0
+        self.current_block = None
+        self.next_block = None
         self.game_over = False
-        self.lives = 3
+        self.score = 0
+        self.screen = pygame.display.set_mode((500, 600))
 
-    def drop_block_at_mouse_position(self):
+    def draw(self, screen):
+        """Draw the game elements on the screen"""
+        screen.fill((0, 0, 0))  # Fill the screen with black color
+
+        # Draw the grid
+        self.grid.draw_grid(screen)
+
+        # Draw the current block
         if self.current_block:
-            grid_x = self.mouse_x // self.cell_size
-            grid_y = self.mouse_y // self.cell_size
+            self.current_block.draw_block(screen)
+        else:
+            print("Current block is None")
 
-            self.current_block.move(grid_y - self.current_block.y_offset, grid_x - self.current_block.x_offset)
+        # Draw the next block
+        if self.next_block:
+            self.next_block.draw_block(screen, offset_x=200, offset_y=50)  # Adjust the offset as needed
+        else:
+            print("Next block is None")
 
-    def update_block_position_with_mouse(self):
-        if self.current_block:
-            self.current_block.move((self.mouse_y // self.cell_size) - self.current_block.y_offset, (self.mouse_x // self.cell_size) - self.current_block.x_offset)
+        # Draw the score
+        font = pygame.font.Font(None, 36)
+        score_text = font.render("Score: " + str(self.score), True, (255, 255, 255))
+        screen.blit(score_text, (50, 50))  # Adjust the position as needed
 
-    def handle_events(self):
+        # Update the display
+        pygame.display.flip()
+
+    def keypress(self, update):
+        """Listens for keyboard events"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.MOUSEBUTONDOWN:
-                if event.button == 1:
-                    self.drop_block_at_mouse_position()
-            elif event.type == pygame.MOUSEMOTION:
-                self.mouse_x, self.mouse_y = event.pos
-                self.update_block_position_with_mouse
+                pygame.quit()
+                sys.exit()
+            elif event.type == update and not self.game_over:
+                self.move_down()
 
-
+    def move_down(self):
+        """Move the current block down"""
+        if self.current_block:
+            if self.grid.can_move_down(self.current_block):
+                self.current_block.move(1, 0)
+            else:
+                self.grid.add_block_to_grid(self.current_block)
+                self.current_block = self.next_block
+                self.next_block = self.generate_block()
+                rows_cleared = self.grid.clear_rows()
+                self.score += rows_cleared * 10
 
     def generate_block(self):
-        return random.choice([LBlock(), JBlock(), IBlock(), TBlock(), SquareBlock(), HBlock(), HInvertBlock(), ZBlock(), SBlock(), UBlock(), TridentBlock(), CrossBlock(), HlongBlock(), HIlongBlock()])
-    
-    def draw(self, screen):
-        self.grid.draw_grid(screen)
-        self.current_block.draw_block(screen, 0, 0)
+        """Generate a new random block"""
+        import random
+        tetromino_types = [IBlock, JBlock, LBlock, SBlock, TBlock, ZBlock]
+        random_tetromino = random.choice(tetromino_types)
+        print("Generating new block:", random_tetromino.__name__)
+        return random_tetromino()
 
-    def mouse_movement(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mose.get_pos()
+    def move_block_left(self):
+        """Move the current block to the left"""
+        if self.current_block:
+            self.current_block.move(0, -1)
 
-        elif event.type == pygame.MOUSEBUTTONUP:
-            self.drop_block_at_mouse_position()
+    def move_block_right(self):
+        """Move the current block to the right"""
+        if self.current_block:
+            self.current_block.move(0, 1)
 
-        elif event.type == pygame.MOUSEMOTION:
-            self.update_block_at_mouse_position()
+    def rotate_block(self):
+        """Rotate the current block"""
+        if self.current_block:
+            self.current_block.rotation()
 
+    def current_block_position(self):
+        """Return the position of the current block"""
+        if self.current_block:
+            return self.current_block.position()
 
-    def game_loop(self):
-        screen = pygame.display.set_mode((self.grid.width * self.cell_size, self.grid.height *self.cell_size))
+    def start(self):
+        """Start the game"""
+        pygame.init()
+        clock = pygame.time.Clock()
+        pygame.key.set_repeat(250, 25)
+
+        UPDATE = pygame.USEREVENT
+        pygame.time.set_timer(UPDATE, 300)
+
         while not self.game_over:
-            for event in pygame.event.get():
-                if event.typr == pygame.QUIT:
-                    self.game_over  = True
-                self.handle_mouse_movement(event)
-            self.update()
-            self.draw(screen)
-            pygame.display.update()
+            self.keypress(UPDATE)
+            self.draw(self.screen)
+            clock.tick(5)
+
+if __name__ == "__main__":
+    game = Game()
+    game.start()

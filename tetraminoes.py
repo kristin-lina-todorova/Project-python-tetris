@@ -96,61 +96,41 @@ class UBlock(Blocks):
             2 : [P(1,0), P(1,1), P(1,2), P(2,0), P(2,2)],
             3 : [P(0,0), P(0,1), P(1,1), P(2,0), P(2,1)]
         }
-        # initital position of the block on the screen
         self.move(0, 3)
 
 class TridentBlock(Blocks):
-    """The Tridentblock tetramino"""
     def __init__(self):
-        # inherit from base Block class and have the id set to 11
         super().__init__(id = 11)
-        # dictionary holding each rotation for the block
         self.cells = {
             0 : [P(0,0), P(0,2), P(1,0), P(1,1), P(1,2), P(2,1)],
             1 : [P(0,1), P(0,2), P(1,0), P(1,1), P(2,1), P(2,2)],
             2 : [P(0,1), P(1,0), P(1,1), P(1,2), P(2,0), P(2,2)],
             3 : [P(0,0), P(0,1), P(1,1), P(1,2), P(2,0), P(2,1)]
         }
-        # initital position of the block on the screen
         self.move(0, 3)
 
-
 class CrossBlock(Blocks):
-    """The Crossblock tetramino"""
     def __init__(self):
-        # inherit from base Block class and have the id set to 12
         super().__init__(id = 12)
-        # dictionary holding each rotation for the block
         self.cells = {
             0 : [P(0,1), P(1,0), P(1,1), P(1,2), P(2,1)]
         }
-        # initital position of the block on the screen
         self.move(0, 3)
 
-
 class HlongBlock(Blocks):
-    """The Hlongblock tetramino"""
     def __init__(self):
-        # inherit from base Block class and have the id set to 13
         super().__init__(id = 13)
-        # dictionary holding each rotation for the block
         self.cells = {
             0 : [P(0,0), P(1,0), P(1,1), P(1,2), P(2,2)],
             1 : [P(0,1), P(0,2), P(1,1), P(2,0), P(2,1)]
         }
-        # initital position of the block on the screen
         self.move(0, 3)
 
-
 class HIlongBlock(Blocks):
-    """The Hinvertedlongblock tetramino"""
     def __init__(self):
-        # inherit from base Block class and have the id set to 14
         super().__init__(id = 14)
-        # dictionary holding each rotation for the block
         self.cells = {
             0 : [P(0,2), P(1,0), P(1,1), P(1,2), P(2,0)],
             1 : [P(0,0), P(0,1), P(1,1), P(2,1), P(2,2)]
         }
-        # initital position of the block on the screen
         self.move(0, 3)

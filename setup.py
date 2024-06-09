@@ -1,17 +1,21 @@
+# setup.py
+
 import cx_Freeze
 import sys
 
+# Set base to None to avoid console opening in the background
 base = None
-if (sys.platform == "win32"):
+if sys.platform == "win32":
     base = "Win32GUI"
 
-executables = [cx_Freeze.Executable("src\main.py", base = base)]
+# The file to execute
+executables = [cx_Freeze.Executable("main.py", base=base)]
 
+# Setup
 cx_Freeze.setup(
-    name = "Tetris",
-    version = "0.2"
-    options = {"build.exe": {"packages": ["pygame"]}},
-    description = "Tetris Game",
-    executables = executables
-    )
-
+    name="BlockBlast",
+    version="1.0",
+    options={"build_exe": {"packages": ["pygame"]}},
+    description="Block Blast Game",
+    executables=executables
+)
