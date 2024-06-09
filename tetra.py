@@ -1,5 +1,6 @@
 import pygame
 from colors import Colors
+from pos import BlockPosition as P
 
 class Blocks:
     def __init__(self, id):
@@ -7,7 +8,7 @@ class Blocks:
         self.cells = {}
         self.cell_size = 50
         self.rot = 0
-        self.colors = Colors.get_color
+        self.colors = Colors().get_color()
         self.y_offset = 0
         self.x_offset = 0
 
@@ -30,16 +31,16 @@ def draw_block(self, screen, offset_x, offset_y):
         bx = offset_x + tile.x * self.cell_size
         width_height = self.cell_size - 1
         tile_rect = pygame.Rect(bx, by, width_height, width_height)
-        pygame.draw.rect(screen, self.colors[self,id], tile_rect)
+        pygame.draw.rect(screen, self.colors[self.id], tile_rect)
 
 def rotation(self):
     length = len(self.cells)
     self.rot += 1
     if self.rot == length or self.rot < 0:
-        self.rot
+        self.rot = 0
 
 def un_rotate(self):
     length = len(self.cells)
     self.rot -= 1
-    if self.rot == 0:
+    if self.rot < 0:
         self.rot = length - 1
