@@ -1,10 +1,5 @@
-# grid.py
-
-"""The Grid class module"""
-
 from correct_colors import Colors
 import pygame
-
 
 class Grid:
     """A class Grid to display the area for the blocks"""

@@ -1,6 +1,5 @@
-# game.py
 import pygame
-from correct_tetra import Blocks
+from correct_tetraminoes import Blocks
 from correct_colors import Colors
 
 class Game:

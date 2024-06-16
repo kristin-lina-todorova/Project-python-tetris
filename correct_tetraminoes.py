@@ -1,137 +1,98 @@
-# tetraminoes.py
 from correct_pos import BlockPosition as P
-from correct_tetra import Blocks
+from correct_colors import Colors
+import pygame
 
-class LBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=1)
-        self.cells = {
-            0: [P(0, 1), P(1, 1), P(2, 1), P(2, 2)],
-            1: [P(1, 0), P(1, 1), P(1, 2), P(2, 0)],
-            2: [P(0, 0), P(0, 1), P(1, 1), P(2, 1)],
-            3: [P(0, 2), P(1, 0), P(1, 1), P(1, 2)]
-        }
-        self.move(0, 3)
+class Blocks:
+    def __init__(self, block_id):
+        self.id = block_id
+        self.cells = self.get_block_cells(block_id)
+        self.cell_size = 30
+        self.rot = 0
+        self.colors = Colors.get_color()
+        self.y_offset = 0
+        self.x_offset = 3
 
-class JBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=2)
-        self.cells = {
-            0: [P(0, 1), P(1, 1), P(2, 1), P(2, 0)],
-            1: [P(0, 0), P(1, 0), P(1, 1), P(1, 2)],
-            2: [P(0, 1), P(0, 2), P(1, 1), P(2, 1)],
-            3: [P(1, 0), P(1, 1), P(1, 2), P(2, 2)]
+    def get_block_cells(self, block_id):
+        # Define the tetromino shapes
+        blocks = {
+            1: {
+                0: [P(0, 0), P(0, 1), P(0, 2), P(1, 0)],     # LBlock
+                1: [P(0, 0), P(1, 0), P(2, 0), P(2, 1)],
+                2: [P(0, 2), P(1, 0), P(1, 1), P(1, 2)],
+                3: [P(0, 0), P(0, 1), P(1, 1), P(2, 1)]
+            },
+            2: {
+                0: [P(0, 1), P(1, 1), P(2, 1), P(2, 0)],     # JBlock
+                1: [P(0, 0), P(1, 0), P(1, 1), P(1, 2)],
+                2: [P(0, 1), P(0, 2), P(1, 1), P(2, 1)],
+                3: [P(1, 0), P(1, 1), P(1, 2), P(2, 2)]
+            },
+            3: {
+                0: [P(0, 1), P(1, 1), P(2, 1), P(3, 1)],     # IBlock
+                1: [P(1, 0), P(1, 1), P(1, 2), P(1, 3)]
+            },
+            4: {
+                0: [P(0, 1), P(1, 0), P(1, 1), P(1, 2)],     # TBlock
+                1: [P(0, 1), P(1, 1), P(1, 2), P(2, 1)],
+                2: [P(1, 0), P(1, 1), P(1, 2), P(2, 1)],
+                3: [P(1, 0), P(0, 1), P(1, 1), P(2, 1)]
+            },
+            5: {
+                0: [P(0, 1), P(0, 2), P(1, 0), P(1, 1)],     # SBlock
+                1: [P(0, 0), P(1, 0), P(1, 1), P(2, 1)]
+            },
+            6: {
+                0: [P(0, 0), P(0, 1), P(1, 1), P(1, 2)],     # ZBlock
+                1: [P(0, 1), P(1, 0), P(1, 1), P(2, 0)]
+            },
+            7: {
+                0: [P(0, 0), P(0, 1), P(1, 0), P(1, 1)]      # OBlock
+            },
+            8: {
+                0: [P(0, 0), P(0, 1), P(0, 2), P(1, 0), P(1, 2)], # PyramideBlock
+                1: [P(0, 0), P(1, 0), P(1, 1), P(2, 1), P(2, 2)],
+                2: [P(1, 0), P(1, 2), P(2, 0), P(2, 1), P(2, 2)],
+                3: [P(0, 0), P(0, 1), P(1, 1), P(2, 1), P(2, 2)]
+            },
+            9: {
+                0: [P(0, 1), P(1, 0), P(1, 1), P(1, 2), P(2, 1)]  # PlusBlock
+            },
+            10: {
+                0: [P(0, 0), P(0, 1), P(0, 2), P(0, 3), P(0, 4), P(1, 2), P(2, 2)], # ExtraBlock
+                1: [P(0, 2), P(1, 0), P(1, 1), P(1, 2), P(1, 3), P(1, 4), P(2, 2)]
+            }
         }
-        self.move(0, 4)
+        return blocks.get(block_id, {})
 
-class IBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=3)
-        self.cells = {
-            0: [P(0, 1), P(1, 1), P(2, 1), P(3, 1)],
-            1: [P(1, 0), P(1, 1), P(1, 2), P(1, 3)]
-        }
-        self.move(0, 3)
+    def move(self, y, x):
+        self.y_offset += y
+        self.x_offset += x
 
-class TBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=4)
-        self.cells = {
-            0: [P(0, 1), P(1, 0), P(1, 1), P(1, 2)],
-            1: [P(0, 1), P(1, 1), P(1, 2), P(2, 1)],
-            2: [P(1, 0), P(1, 1), P(1, 2), P(2, 1)],
-            3: [P(1, 0), P(0, 1), P(1, 1), P(2, 1)]
-        }
-        self.move(0, 3)
+    def cell_pos(self):
+        tiles = self.cells[self.rot]
+        new_pos = []
+        for ti in tiles:
+            ti = P(ti.y + self.y_offset, ti.x + self.x_offset)
+            new_pos.append(ti)
+        return new_pos
 
-class SquareBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=5)
-        self.cells = {
-            0: [P(0, 0), P(0, 1), P(1, 0), P(1, 1)]
-        }
-        self.move(0, 4)
+    def draw_block(self, screen, block_x, block_y):
+        tiles = self.cell_pos()
+        for tile in tiles:
+            by = (tile.y + block_y) * self.cell_size
+            bx = (tile.x + block_x) * self.cell_size
+            width_height = self.cell_size - 1
+            tile_rect = pygame.Rect(bx, by, width_height, width_height)
+            pygame.draw.rect(screen, self.colors[self.id], tile_rect)
 
-class HBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=6)
-        self.cells = {
-            0: [P(0, 1), P(1, 1), P(1, 2), P(2, 2)],
-            1: [P(1, 1), P(1, 2), P(2, 0), P(2, 1)]
-        }
-        self.move(0, 3)
-
-class HInvertBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=7)
-        self.cells = {
-            0: [P(0, 1), P(1, 0), P(1, 1), P(2, 0)],
-            1: [P(1, 0), P(1, 1), P(2, 1), P(2, 2)]
-        }
-        self.move(0, 4)
-
-class ZBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=8)
-        self.cells = {
-            0: [P(0, 0), P(0, 1), P(1, 1), P(1, 2)],
-            1: [P(0, 1), P(1, 0), P(1, 1), P(2, 0)]
-        }
-        self.move(0, 3)
-
-class SBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=9)
-        self.cells = {
-            0: [P(0, 1), P(0, 2), P(1, 0), P(1, 1)],
-            1: [P(0, 0), P(1, 0), P(1, 1), P(2, 1)]
-        }
-        self.move(0, 3)
-
-class UBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=10)
-        self.cells = {
-            0: [P(0, 0), P(0, 2), P(1, 0), P(1, 1), P(1, 2)],
-            1: [P(0, 1), P(0, 2), P(1, 1), P(2, 1), P(2, 2)],
-            2: [P(1, 0), P(1, 1), P(1, 2), P(2, 0), P(2, 2)],
-            3: [P(0, 0), P(0, 1), P(1, 1), P(2, 0), P(2, 1)]
-        }
-        self.move(0, 3)
-
-class TridentBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=11)
-        self.cells = {
-            0: [P(0, 0), P(0, 2), P(1, 0), P(1, 1), P(1, 2), P(2, 1)],
-            1: [P(0, 1), P(0, 2), P(1, 0), P(1, 1), P(2, 1), P(2, 2)],
-            2: [P(0, 1), P(1, 0), P(1, 1), P(1, 2), P(2, 0), P(2, 2)],
-            3: [P(0, 0), P(0, 1), P(1, 1), P(1, 2), P(2, 0), P(2, 1)]
-        }
-        self.move(0, 3)
-
-class CrossBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=12)
-        self.cells = {
-            0: [P(0, 1), P(1, 0), P(1, 1), P(1, 2), P(2, 1)]
-        }
-        self.move(0, 3)
-
-class HlongBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=13)
-        self.cells = {
-            0: [P(0, 0), P(1, 0), P(1, 1), P(1, 2), P(2, 2)],
-            1: [P(0, 1), P(0, 2), P(1, 1), P(2, 0), P(2, 1)]
-        }
-        self.move(0, 3)
-
-class HIlongBlock(Blocks):
-    def __init__(self):
-        super().__init__(id=14)
-        self.cells = {
-            0: [P(0, 2), P(1, 0), P(1, 1), P(1, 2), P(2, 0)],
-            1: [P(0, 0), P(0, 1), P(1, 1), P(2, 1), P(2, 2)]
-        }
-        self.move(0, 3)
+    def get_rect(self, block_x, block_y):
+        tiles = self.cell_pos()
+        min_x = min(tile.x for tile in tiles) + block_x
+        max_x = max(tile.x for tile in tiles) + block_x
+        min_y = min(tile.y for tile in tiles) + block_y
+        max_y = max(tile.y for tile in tiles) + block_y
+        rect_x = min_x * self.cell_size
+        rect_y = min_y * self.cell_size
+        rect_width = (max_x - min_x + 1) * self.cell_size
+        rect_height = (max_y - min_y + 1) * self.cell_size
+        return pygame.Rect(rect_x, rect_y, rect_width, rect_height)

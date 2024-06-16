@@ -6,7 +6,7 @@ class BlockPosition:
         """initialization of the class
         Args
             row (int): the position of the block on the y axis
-            column (int): the postiion of the block on the x axis
+            column (int): the position of the block on the x axis
         """
         self.y = row
         self.x = column

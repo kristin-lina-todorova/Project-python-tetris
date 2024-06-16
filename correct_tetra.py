@@ -11,7 +11,7 @@ class Blocks:
             id (int): id of the block
         """
         self.id = id
-        self.cells = {0: []}  # Initialize with an empty list for rotation 0
+        self.cells = {0: []} 
         self.cell_size = 30
         self.rot = 0
         self.colors = Colors.get_color()
@@ -24,7 +24,6 @@ class Blocks:
             y (int): y axis (row)
             x (int): x axis (column)
         """
-        # Increase the offsets according to the numbers obtained from x and y
         self.y_offset += y
         self.x_offset += x
 
@@ -33,7 +32,7 @@ class Blocks:
         Returns:
             new (list): a list of the position for the current block
         """
-        # Get the block according to the rotation position
+        
         tiles = self.cells[self.rot]
         new_pos = []
         for ti in tiles:

@@ -1,4 +1,4 @@
-# colors.py
+#correct_colors.py
 class Colors:
     """A class to define colors"""
 
@@ -11,7 +11,6 @@ class Colors:
     grid_color = (100, 149, 237)
     screen_background = (245, 245, 245)
 
-    @staticmethod
     def get_color():
         """Return a list of predefined colors"""
         return [
