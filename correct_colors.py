@@ -2,8 +2,6 @@
 class Colors:
     """A class to define colors"""
 
-    black = (0, 0, 0)
-    white = (255, 255, 255)
     red = (255, 0, 0)
     green = (0, 255, 0)
     blue = (0, 0, 255)
@@ -14,8 +12,6 @@ class Colors:
     def get_color():
         """Return a list of predefined colors"""
         return [
-            Colors.black,
-            Colors.white,
             Colors.red,
             Colors.green,
             Colors.blue,

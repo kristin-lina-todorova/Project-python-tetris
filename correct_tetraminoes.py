@@ -13,7 +13,6 @@ class Blocks:
         self.x_offset = 3
 
     def get_block_cells(self, block_id):
-        # Define the tetromino shapes
         blocks = {
             1: {
                 0: [P(0, 0), P(0, 1), P(0, 2), P(1, 0)],     # LBlock
@@ -79,6 +78,7 @@ class Blocks:
     def draw_block(self, screen, block_x, block_y):
         tiles = self.cell_pos()
         for tile in tiles:
+            print(f"Drawing tile at {tile.x}, {tile.y}")  # Debugging statement
             by = (tile.y + block_y) * self.cell_size
             bx = (tile.x + block_x) * self.cell_size
             width_height = self.cell_size - 1

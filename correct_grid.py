@@ -10,7 +10,7 @@ class Grid:
         # set each area of the grid to be 0 which means empty
         self.grid = [[0 for _ in range(self.columns)] for _ in range(self.rows)]
         # get the list of colors
-        self.colors = Colors.get_color()
+        self.colors = (0, 0, 0)
 
     def draw_grid(self, screen):
         """Draws the grid to the screen
