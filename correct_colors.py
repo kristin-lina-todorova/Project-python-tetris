@@ -1,4 +1,3 @@
-#correct_colors.py
 class Colors:
     """A class to define colors"""
 
